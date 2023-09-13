@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedKernel", "SharedKernel\SharedKernel.csproj", "{271A5AEA-88CC-4A07-8686-334A8EC103BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp", "ConsoleApp\ConsoleApp.csproj", "{0E02EC23-052D-4CB8-84E3-9A293F460E59}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingBlocks", "{301EC910-51EC-4575-A90C-7A487C1C2998}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		global.json = global.json
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{271A5AEA-88CC-4A07-8686-334A8EC103BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{271A5AEA-88CC-4A07-8686-334A8EC103BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{271A5AEA-88CC-4A07-8686-334A8EC103BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{271A5AEA-88CC-4A07-8686-334A8EC103BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E02EC23-052D-4CB8-84E3-9A293F460E59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E02EC23-052D-4CB8-84E3-9A293F460E59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E02EC23-052D-4CB8-84E3-9A293F460E59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E02EC23-052D-4CB8-84E3-9A293F460E59}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
