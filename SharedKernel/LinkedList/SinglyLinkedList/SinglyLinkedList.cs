@@ -106,6 +106,10 @@ public class SinglyLinkedList<T> : ISinglyLinkedList<T>
         return newNode;
     }
 
+    /// <summary>
+    ///  Add first
+    /// Create: 12/09/2023 - By: Đỗ Chí Hùng
+    /// </summary>
     public void AddFirst(SinglyLinkedListNode<T> node)
     {
         ValidateNewNode(node);
@@ -122,14 +126,22 @@ public class SinglyLinkedList<T> : ISinglyLinkedList<T>
         node.list = this;
     }
     
-
     /// <summary>
     /// Add last
     /// Create: 12/09/2023 - By: Đỗ Chí Hùng
     /// </summary>
     public SinglyLinkedListNode<T> AddLast(T value)
     {
-        throw new NotImplementedException();
+        SinglyLinkedListNode<T> newNode = new SinglyLinkedListNode<T>(this, value);
+        if (head is null)
+        {
+            InsertNodeToEmptyList(newNode);
+        }
+        else
+        {
+            InsertNodeAfter(tail, newNode);
+        }
+        return newNode;
     }
 
     /// <summary>
@@ -138,7 +150,16 @@ public class SinglyLinkedList<T> : ISinglyLinkedList<T>
     /// </summary>
     public void AddLast(SinglyLinkedListNode<T> node)
     {
-        throw new NotImplementedException();
+        ValidateNewNode(node);
+        if (head is null)
+        {
+            InsertNodeToEmptyList(node);
+        }
+        else
+        {
+            InsertNodeAfter(tail, node);
+        }
+        node.list = this;
     }
 
     /// <summary>
@@ -147,7 +168,17 @@ public class SinglyLinkedList<T> : ISinglyLinkedList<T>
     /// </summary>
     public void Clear()
     {
-        throw new NotImplementedException();
+        SinglyLinkedListNode<T>? current = head;
+        while (current != null)
+        {
+            SinglyLinkedListNode<T> temp = current;
+            current = current.next;
+            temp.Invalidate();
+        }
+        
+        head = null;
+        tail = null;
+        count = 0;
     }
 
     /// <summary>
@@ -156,7 +187,7 @@ public class SinglyLinkedList<T> : ISinglyLinkedList<T>
     /// </summary>
     public bool Contains(T value)
     {
-        throw new NotImplementedException();
+        return Find(value) is not null;
     }
 
     /// <summary>
@@ -165,68 +196,143 @@ public class SinglyLinkedList<T> : ISinglyLinkedList<T>
     /// </summary>
     public SinglyLinkedListNode<T>? Find(T value)
     {
-        throw new NotImplementedException();
+        SinglyLinkedListNode<T>? node = head;
+        EqualityComparer<T> c = EqualityComparer<T>.Default;
+        
+        if (node is null)
+        {
+            return default!;
+        }
+
+        if (value is null)
+        {
+            do
+            {
+                if (node!.item is null)
+                {
+                    return node;
+                }
+                node = node.next;
+                
+            } while (node is not null);
+        }
+        
+        do
+        {
+            if (c.Equals(node!.item, value))
+            {
+                return node;
+            }
+            node = node.next;
+            
+        } while (node is not null);
+        
+
+        return default!;
     }
 
-    /// <summary>
-    /// Find last
-    /// Create: 12/09/2023 - By: Đỗ Chí Hùng
-    /// </summary>
-    public SinglyLinkedListNode<T>? FindLast(T value)
+    public bool Remove(T value)
     {
-        throw new NotImplementedException();
+        SinglyLinkedListNode<T> node = Find(value) 
+                                       ?? throw new InvalidOperationException("Node does not exist"); 
+        RemoveNode(node);
+        return true;
     }
+
     
+    public void Remove(SinglyLinkedListNode<T> node)
+    {
+        ValidateNode(node);
+        RemoveNode(node);
+    }
+
+    public void RemoveFirst()
+    {
+        if (head is null)
+        {
+            throw new InvalidOperationException("Node does not exist"); 
+        }
+        
+        RemoveNode(head);
+    }
+
+    public void RemoveLast()
+    {
+        if (tail is null)
+        {
+            throw new InvalidOperationException("Node node does not exist"); 
+        }
+        
+        RemoveNode(tail);
+    }
+
     /// <summary>
     /// Display with Condition
     /// Create: 12/09/2023 - By: Đỗ Chí Hùng
     /// </summary>
-    public void DisplayWithCondition(Func<T, T, bool> condition, Action<T> act)
+    public void DisplayWithCondition(Func<T, bool> condition, Action<T> act)
     {
-        throw new NotImplementedException();
+        SinglyLinkedListNode<T>? node = head;
+        
+        while (node is not null)
+        {
+            if (condition is null || condition.Invoke(node.Value))
+            {
+                act.Invoke(node.Value);
+            }
+            node = node.next;
+        }
     }
 
     #endregion
     
-
     #region [INTERNAL METHODS]
     
     // After: sau
     // Before: Trước
     
-    private void InternalRemoveNode(SinglyLinkedListNode<T> node)
+    private void RemoveNode(SinglyLinkedListNode<T> node)
     {
-        if (node == head)
+        if (node == head && head is null)
         {
-            head = null;
+            return;
+        }
+        
+        if(node == head)
+        {
+            head = head.Next;
+            if (head == null)
+            {
+                tail = null;
+            }
+            return;
+        }
+
+        SinglyLinkedListNode<T> current = head;
+        while (current?.next != node)
+        {
+            current = current.next;
+        }
+
+        if (node == tail)
+        {
+            current.next = null;
+            tail = current;
         }
         else
         {
-            SinglyLinkedListNode<T> current = head;
-            while (current.next is not null && current.next != node)
-            {
-                current = current.next;
-            }
-
-            if (node == tail)
-            {
-                current.next = null;
-                tail = current;
-            }
-            else
-            {
-                current.next = node.next;
-            }
-            
+            current.next = node.next;
         }
+            
+        
         node.Invalidate();
         count--;
     }
-    
     private void InsertNodeToEmptyList(SinglyLinkedListNode<T> newNode)
     {
-        newNode.next = newNode;
+        newNode.next = null;
         head = newNode;
+        tail = newNode;
         count++;
     }
     private void InsertNodeBefore(SinglyLinkedListNode<T> node, SinglyLinkedListNode<T> newNode)
@@ -254,19 +360,20 @@ public class SinglyLinkedList<T> : ISinglyLinkedList<T>
         current.next = newNode;
         count++;
     }
-    
     private void InsertNodeAfter(SinglyLinkedListNode<T> node, SinglyLinkedListNode<T> newNode)
     {
         if (node == tail)
         {
-            tail = node;
+            tail.next = newNode;
+            tail = newNode;
         }
-        
-        newNode.next = node.next;
-        node.next = newNode;
+        else
+        {
+            newNode.next = node.next;
+            node.next = newNode;
+        }
         count++;
     }
-    
     private static void ValidateNewNode(SinglyLinkedListNode<T> node)
     {
         ArgumentNullException.ThrowIfNull(node);
@@ -276,7 +383,6 @@ public class SinglyLinkedList<T> : ISinglyLinkedList<T>
             throw new InvalidOperationException("Invalid node");
         }
     }
-    
     private void ValidateNode(SinglyLinkedListNode<T> node)
     {
         ArgumentNullException.ThrowIfNull(node);

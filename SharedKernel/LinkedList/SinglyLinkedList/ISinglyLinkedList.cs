@@ -16,6 +16,9 @@ public interface ISinglyLinkedList<T>
     void Clear();
     bool Contains(T value);
     SinglyLinkedListNode<T>? Find(T value);
-    SinglyLinkedListNode<T>? FindLast(T value);
-    void DisplayWithCondition(Func<T, T, bool> condition, Action<T> act);
+    bool Remove(T value);
+    void Remove(SinglyLinkedListNode<T> node);
+    void RemoveFirst();
+    void RemoveLast();
+    void DisplayWithCondition(Func<T, bool> condition, Action<T> act);
 }
